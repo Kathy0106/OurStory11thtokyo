@@ -348,6 +348,7 @@
                             <option value="shopping">購物</option>
                             <option value="transport">交通</option>
                             <option value="hotel">住宿</option>
+                            <option value="ticket">門票/Pass</option>
                         </select>
                     </div>
                      <div class="bg-gray-50 p-3 rounded-xl">
@@ -485,10 +486,12 @@
                             { id: 55, time: '17:00', title: '東京還車', category: 'transport', desc: 'T-CAT B1 停車場，入滿油', location: 'T-CAT', transportType: 'car' },
                             { id: 56, time: '20:45', title: '壽司郎 八重洲', category: 'food', desc: '八重洲地下街 南1號', location: '壽司郎 八重洲地下街', transportType: 'walk' }
                         ],
-                        // Day 6: 4/23 Disney
+                        // Day 6: 4/23 Disney Sea (Updated)
                          [
-                            { id: 61, time: '08:00', title: '出發去迪士尼', category: 'transport', desc: '八丁堀 -> 舞濱 (JR京葉線)', location: '舞濱站', transportType: 'train' },
-                            { id: 62, time: '09:00', title: 'Disney Sea / Land', category: 'sightseeing', desc: '必搶 Fantasy Springs Pass', location: 'Tokyo Disney Sea', transportType: 'walk' }
+                            { id: 61, time: '06:45', title: '早起出發 (攻陷 Fantasy Springs)', category: 'transport', desc: '行去「八丁堀」搭 JR 京葉線 (15分鐘)\n目標 07:30 到達門口', location: '八丁堀站', transportType: 'train', travelTime: '45 min' },
+                            { id: 62, time: '07:30', title: '到達門口排隊', category: 'other', desc: '準備好 App，確保 Login，同行飛 Scan 入同一部機', location: 'Tokyo Disney Sea', transportType: 'walk', travelTime: '60 min' },
+                            { id: 63, time: '08:30', title: '入園 & 搶 Pass (關鍵時刻!)', category: 'ticket', desc: '1. 抽 Standby Pass (首選 Frozen)\n2. 買 DPA (如免費已無)', location: 'Fantasy Springs', transportType: 'walk' },
+                            { id: 64, time: '09:00', title: '正式遊玩', category: 'sightseeing', desc: '盡情享受迪士尼海洋 🏰', location: 'Tokyo Disney Sea', transportType: 'walk' }
                         ],
                         // Day 7: 4/24 豐洲
                          [
@@ -597,7 +600,7 @@
                         : 'bg-white/90 text-sakura-600 w-10 h-10 rounded-full shadow flex items-center justify-center hover:bg-white transition-all';
                 },
                 itemCategoryName(cat) {
-                    const map = { sightseeing: '景點', food: '美食', shopping: '購物', transport: '交通', hotel: '住宿', flight: '航班', other: '其他' };
+                    const map = { sightseeing: '景點', food: '美食', shopping: '購物', transport: '交通', hotel: '住宿', flight: '航班', ticket: '門票', other: '其他' };
                     return map[cat] || '其他';
                 },
                 getCategoryIcon(cat) {
