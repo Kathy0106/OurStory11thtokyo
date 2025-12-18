@@ -118,7 +118,7 @@
 
                         <div v-for="(item, idx) in currentDayItinerary" :key="item.id" class="relative pl-12 pb-14 group">
                             
-                            <div v-if="idx > 0 || item.travelTime" class="absolute -top-6 left-12 right-0 flex items-center text-xs text-sakura-600 mb-2 z-50">
+                            <div v-if="idx > 0 || item.travelTime" class="absolute -top-9 left-12 right-0 flex items-center text-xs text-sakura-600 mb-2 z-50">
                                 <span class="bg-sakura-100 px-2 py-0.5 rounded-full border border-sakura-200 flex items-center gap-1">
                                     <i :class="getTransportIcon(item.transportType)"></i>
                                     {{ item.travelTime || '15 min' }}
