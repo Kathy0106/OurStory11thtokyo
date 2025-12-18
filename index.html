@@ -65,6 +65,7 @@
 
         <div class="relative h-[250px] flex-shrink-0 bg-cover bg-center transition-all duration-500"
              style="background-image: url('./new_header.png');">
+            
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/30"></div>
             
             <div class="absolute bottom-8 right-4 flex space-x-3 z-20">
@@ -108,9 +109,9 @@
                     <div class="bg-gradient-to-r from-blue-100 to-sakura-200 rounded-2xl p-4 mb-6 flex items-center justify-between shadow-sm text-slate-600">
                         <div>
                             <div class="text-xs opacity-70">東京, 日本</div>
-                            <div class="text-2xl font-bold">18°C <span class="text-sm font-normal text-gray-500">體感 16°C</span></div>
+                            <div class="text-2xl font-bold">{{ weather.temp }}°C <span class="text-sm font-normal text-gray-500">體感 {{ weather.feels_like }}°C</span></div>
                         </div>
-                        <i class="fa-solid fa-cloud-sun text-4xl text-yellow-400 drop-shadow-sm"></i>
+                        <i :class="['fa-solid', weather.icon, 'text-4xl text-yellow-400 drop-shadow-sm']"></i>
                     </div>
 
                     <div class="space-y-0 relative">
@@ -119,7 +120,7 @@
                         <div v-for="(item, idx) in currentDayItinerary" :key="item.id" class="relative pl-12 pb-14 group">
                             
                             <div v-if="idx > 0 || item.travelTime" class="absolute -top-9 left-12 right-0 flex items-center text-xs text-sakura-600 mb-2 z-50">
-                                <span class="bg-sakura-100 px-2 py-0.5 rounded-full border border-sakura-200 flex items-center gap-1">
+                                <span class="bg-sakura-100 px-2 py-0.5 rounded-full border border-sakura-200 flex items-center gap-1 shadow-sm">
                                     <i :class="getTransportIcon(item.transportType)"></i>
                                     {{ item.travelTime || '15 min' }}
                                 </span>
@@ -376,6 +377,14 @@
                     calcJpy: '',
                     calcTwd: '',
                     
+                    // 修改點：加入天氣資料與你的 API Key
+                    weather: { 
+                        temp: '--', 
+                        feels_like: '--', 
+                        icon: 'fa-spinner fa-spin' 
+                    },
+                    apiKey: 'bd5e378503939ddaee76f12ad7a97608',
+
                     // 日期設定 (根據你的行程)
                     days: [
                         { weekday: 'Sat', date: '4/18' },
@@ -476,6 +485,9 @@
                 }
             },
             mounted() {
+                // 修改點：網頁載入時自動抓天氣
+                this.fetchWeather();
+
                 // 從 localStorage 讀取資料 (如果有的話)
                 const savedShopping = localStorage.getItem('shoppingList');
                 if (savedShopping) this.shoppingList = JSON.parse(savedShopping);
@@ -488,6 +500,22 @@
                 if (savedItinerary) this.itineraryData = JSON.parse(savedItinerary);
             },
             methods: {
+                // 修改點：新增天氣 API 功能
+                fetchWeather() {
+                    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&lang=zh_tw&appid=${this.apiKey}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        this.weather.temp = Math.round(data.main.temp);
+                        this.weather.feels_like = Math.round(data.main.feels_like);
+                        const weatherId = data.weather[0].id;
+                        if (weatherId === 800) this.weather.icon = 'fa-sun';
+                        else if (weatherId >= 801) this.weather.icon = 'fa-cloud';
+                        else if (weatherId >= 500) this.weather.icon = 'fa-cloud-rain';
+                        else if (weatherId >= 600) this.weather.icon = 'fa-snowflake';
+                        else this.weather.icon = 'fa-cloud-sun';
+                    })
+                    .catch(err => console.error("天氣載入失敗", err));
+                },
                 tabClass(tab) {
                     return this.currentTab === tab 
                         ? 'bg-sakura-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all transform scale-110' 
